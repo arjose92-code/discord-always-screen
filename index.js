@@ -365,20 +365,17 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
   }
 });
 
-// Surveillance conditionnelle toutes les 60s
+// Surveillance conditionnelle toutes les 15s (plus réactif)
 setInterval(async ()=>{
   if (!CONNECT_ONLY_IF_NOT_IN_VOC) return;
   if (!client.user) return;
   const inVoc = await isAlreadyInVoice();
   if (!inVoc && !isStreaming) {
-    console.log("[CONDITION] Check 60s: tu n'es plus en voc -> je me connecte");
+    console.log("[CONDITION] Check 15s: tu n'es plus en voc -> je me connecte");
     isStreaming = false;
     startAll();
-  } else if (inVoc && isStreaming) {
-    // on est en Go Live alors que tu es déjà en voc -> on pourrait leave, mais on laisse le choix
-    // console.log("[CONDITION] Tu es en voc et je suis aussi en Go Live -> je reste (désactive CONNECT_ONLY_IF_NOT_IN_VOC si tu veux double)");
   }
-}, 60000);
+}, 15000);
 
 client.on('disconnect', ()=> {
   console.log("[DISCORD] disconnect -> reconnect 10s");

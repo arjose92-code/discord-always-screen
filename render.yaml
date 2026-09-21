@@ -15,7 +15,7 @@ services:
       - key: MODE
         value: stream
       - key: CONNECT_ONLY_IF_NOT_IN_VOC
-        value: true
+        value: false
       - key: STREAM_NAME
         value: Visual Studio Code
       - key: USE_STREAMING_BADGE
