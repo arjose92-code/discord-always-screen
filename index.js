@@ -315,7 +315,10 @@ client.on('ready', async () => {
 });
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
-  if (newState.member?.id !== client.user.id && oldState.member?.id !== client.user.id) return;
+  const uid = client.user?.id;
+  const oldId = oldState?.id || oldState?.member?.id || oldState?.userId;
+  const newId = newState?.id || newState?.member?.id || newState?.userId;
+  if (newId !== uid && oldId !== uid) return;
 
   // Ignore les events pendant que le bot lui-même join
   if (botIsJoining && newState.channelId === CHANNEL_ID) {
@@ -356,26 +359,41 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
     }
   }
 
-  // Comportement normal : si on s'est fait kick du salon cible
-  if (oldState.member?.id === client.user.id && !newState.channelId) {
-    console.log("[VOICE] Déconnecté du vocal (kick/reboot) -> reconnexion dans 5s");
+  // Comportement normal : si on s'est fait kick / leave du salon cible (robuste: check id ou member.id)
+  const uid = client.user.id;
+  const oldId = oldState.id || oldState.member?.id || oldState.userId;
+  const newId = newState.id || newState.member?.id || newState.userId;
+  if ((oldId === uid || newId === uid) && !newState.channelId) {
+    console.log("[VOICE] Déconnecté du vocal (kick/leave/reboot) -> reconnexion dans 5s");
     isStreaming = false;
     clearTimeout(reconnectTimer);
     reconnectTimer = setTimeout(()=> { isStreaming=false; startAll(); }, 5000);
   }
 });
 
-// Surveillance conditionnelle toutes les 15s (plus réactif)
+// Surveillance toutes les 15s (conditionnelle) + 20s (always) pour forcer le rejoin
 setInterval(async ()=>{
-  if (!CONNECT_ONLY_IF_NOT_IN_VOC) return;
   if (!client.user) return;
+  if (CONNECT_ONLY_IF_NOT_IN_VOC) {
+    const inVoc = await isAlreadyInVoice();
+    if (!inVoc && !isStreaming) {
+      console.log("[CONDITION] Check 15s: tu n'es plus en voc -> je me connecte");
+      isStreaming = false;
+      startAll();
+    }
+  }
+}, 15000);
+setInterval(async ()=>{
+  if (CONNECT_ONLY_IF_NOT_IN_VOC) return;
+  if (!client.user) return;
+  if (isStreaming) return;
   const inVoc = await isAlreadyInVoice();
-  if (!inVoc && !isStreaming) {
-    console.log("[CONDITION] Check 15s: tu n'es plus en voc -> je me connecte");
+  if (!inVoc) {
+    console.log("[ALWAYS] Check 20s: pas en voc -> reconnexion forcée");
     isStreaming = false;
     startAll();
   }
-}, 15000);
+}, 20000);
 
 client.on('disconnect', ()=> {
   console.log("[DISCORD] disconnect -> reconnect 10s");
