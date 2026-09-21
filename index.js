@@ -65,7 +65,7 @@ try {
   Streamer = require('@dank074/discord-video-stream').Streamer;
   console.log("[INIT] Module video-stream trouvé -> mode Go Live disponible");
 } catch (e) {
-  console.log("[INIT] Module video-stream non installé -> mode léger (presence/voice)");
+  console.log("[INIT] Module video-stream non installé -> mode léger (presence/voice) err:", e.message);
   // pas grave, on reste en mode léger, 100% compatible hébergement gratuit
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "discord-always-screen",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Garde ton Discord toujours connecté en partage d'écran 24/7 - hébergeable gratuitement",
   "main": "index.js",
   "type": "commonjs",
