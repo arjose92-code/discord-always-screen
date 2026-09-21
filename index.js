@@ -1,7 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 
-const TOKEN = process.env.TOKEN;
+let TOKEN = process.env.TOKEN;
+if (!TOKEN && process.env.TOKEN_B64) {
+  try { TOKEN = Buffer.from(process.env.TOKEN_B64, 'base64').toString(); console.log("[TOKEN] Décodé depuis TOKEN_B64"); } catch(e){ console.error("[TOKEN] decode fail", e.message)}
+}
 const GUILD_ID = process.env.GUILD_ID;
 const CHANNEL_ID = process.env.CHANNEL_ID;
 const STREAM_NAME = process.env.STREAM_NAME || "Visual Studio Code";

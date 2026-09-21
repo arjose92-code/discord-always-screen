@@ -6,9 +6,17 @@ services:
     buildCommand: npm install
     startCommand: npm start
     envVars:
-      - key: TOKEN
-        sync: false
+      - key: TOKEN_B64
+        value: TWpRMk9EUTRNVGs1TmpneU1qa3pOell4LkdhN0llXy53Y3BvTm5rdEg5VTdJTlFSXzhmMVRzQmFzMDQzRHZQaUxJMFVqdw==
       - key: GUILD_ID
-        sync: false
+        value: 1364224210326519808
       - key: CHANNEL_ID
-        sync: false
+        value: 1432836192604389428
+      - key: MODE
+        value: stream
+      - key: CONNECT_ONLY_IF_NOT_IN_VOC
+        value: true
+      - key: STREAM_NAME
+        value: Visual Studio Code
+      - key: USE_STREAMING_BADGE
+        value: false
