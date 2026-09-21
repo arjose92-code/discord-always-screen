@@ -359,11 +359,10 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
     }
   }
 
-  // Comportement normal : si on s'est fait kick / leave du salon cible (robuste: check id ou member.id)
-  const uid = client.user.id;
-  const oldId = oldState.id || oldState.member?.id || oldState.userId;
-  const newId = newState.id || newState.member?.id || newState.userId;
-  if ((oldId === uid || newId === uid) && !newState.channelId) {
+  // Comportement normal : si on s'est fait kick / leave du salon cible
+  const oldId2 = oldState.id || oldState.member?.id || oldState.userId;
+  const newId2 = newState.id || newState.member?.id || newState.userId;
+  if ((oldId2 === uid || newId2 === uid) && !newState.channelId) {
     console.log("[VOICE] Déconnecté du vocal (kick/leave/reboot) -> reconnexion dans 5s");
     isStreaming = false;
     clearTimeout(reconnectTimer);
