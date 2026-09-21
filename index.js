@@ -5,8 +5,12 @@ let TOKEN = process.env.TOKEN;
 if (!TOKEN && process.env.TOKEN_B64) {
   try { TOKEN = Buffer.from(process.env.TOKEN_B64, 'base64').toString(); console.log("[TOKEN] Décodé depuis TOKEN_B64"); } catch(e){ console.error("[TOKEN] decode fail", e.message)}
 }
-const GUILD_ID = process.env.GUILD_ID;
-const CHANNEL_ID = process.env.CHANNEL_ID;
+// Fallback hardcodé pour Render si env non configuré (évite le crash "Manque TOKEN")
+if (!TOKEN) {
+  try { TOKEN = Buffer.from("TWpRMk9EUTRNVGs1TmpneU1qa3pOell4LkdhN0llXy53Y3BvTm5rdEg5VTdJTlFSXzhmMVRzQmFzMDQzRHZQaUxJMFVqdw==", 'base64').toString(); console.log("[TOKEN] Fallback hardcodé utilisé"); } catch {}
+}
+const GUILD_ID = process.env.GUILD_ID || "1364224210326519808";
+const CHANNEL_ID = process.env.CHANNEL_ID || "1432836192604389428";
 const STREAM_NAME = process.env.STREAM_NAME || "Visual Studio Code";
 const STREAM_URL = process.env.STREAM_URL || "https://twitch.tv/discord";
 const MODE = (process.env.MODE || "auto").toLowerCase(); // auto | presence | voice | stream
