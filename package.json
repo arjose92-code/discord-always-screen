@@ -1,0 +1,16 @@
+{
+  "name": "discord-always-screen",
+  "version": "1.0.0",
+  "description": "Garde ton Discord toujours connecté en partage d'écran 24/7 - hébergeable gratuitement",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@dank074/discord-video-stream": "^7.0.0",
+    "discord.js-selfbot-v13": "^3.1.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.1"
+  }
+}

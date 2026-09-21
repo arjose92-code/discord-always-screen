@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: discord-always-screen
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: TOKEN
+        sync: false
+      - key: GUILD_ID
+        sync: false
+      - key: CHANNEL_ID
+        sync: false
